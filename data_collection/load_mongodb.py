@@ -1,14 +1,29 @@
 import pymongo
 import pandas as pd 
 import re
+from tmdb_search import *
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import bson
+import json
+
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')  # Lightweight and fast model
+
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["moviepy"]
-mycol = mydb["movies"]
+movieCol = mydb["movies"]
+netflixCol = mydb["netflix"]
+
+#movieCol.delete_many({})
+#netflixCol.delete_many({})
 
 
 print(myclient.list_database_names())
 print(mydb.list_collection_names())
+
+
+
 
 
 # 1.1 - CLEANING MOVIELENS MOVIE DATA
@@ -62,21 +77,48 @@ tagData = tagData.sort_values(by='user_count', ascending=False)
 # tags_for_movie = tagData.loc[tagData['movieId'] == 1, 'tag'].tolist()
 # print(tags_for_movie)
 
+# 1.4 - TMDB LINKS 
+tmdbLinks = pd.read_csv('movielens/links.csv')
+
 
 # insert into collection 
 '''
+all movielens movies 
 {
-movieId: string,
+movieId: int,
+movieName: string,
+releaseYear: string,
+genres: [string],
+tags: [string],
+tmdbId: string/int
+}
+'''
+
+'''
+all netflix intersect movielens movies
+{
+movieId: int,
 movieName: string,
 releaseYear: string,
 genres: [string],
 tags: [string],
 netflix: boolean,
-language: string
+language: [string],
+tmdbId: string/int,
+overview: string,
+tagline: string,
+tmdbRating: float,
+posterLink: string, 
+originalLanguage: string,
+spokenLanguages: [string],
+productionCompanies: [string],
+overviewEmbedding: 
 }
 '''
 
-""" for index, row in movieData.iterrows():
+""" i = 0 
+
+for index, row in movieData.iterrows():
     movieId = row['movieId']
     movieName = row['title']
     releaseYear = row['year']
@@ -87,26 +129,83 @@ language: string
             genres.append(g)
 
     tags = tagData.loc[tagData['movieId'] == movieId, 'tag'].tolist()
+    
+    tmdbLink = tmdbLinks.loc[tmdbLinks['movieId'] == movieId, 'tmdbId']
 
-    netflix = (movieId in netflixMovieIds)
-    language = ''
-    if(netflix):
-        language = merged.loc[merged['movieId'] == movieId, 'Language'].values[0]
+    tmdbId = None
+    if not pd.isna(tmdbLink).any():
+        tmdbId = tmdbLink.iloc[0] 
+    
     
     mydict = { "movieId": movieId, 
                "movieName": movieName,
                "releaseYear": releaseYear,
                "genres": genres,
                "tags": tags,
-               "netflix": netflix,
-               "language": language
+               "tmdbId": tmdbId
                 }
+    
 
-    x = mycol.insert_one(mydict) """
+    x = movieCol.insert_one(mydict)
 
+
+    netflix = (movieId in netflixMovieIds)
+
+    if netflix:
+        print(tmdbId)
+        print(i)
+        i += 1
+
+        #ADD API KEY 
+        tmdb_api_key = ''
+        tmdbData = TMDB_Metadata(tmdb_api_key, tmdbId)
+
+        if 'Error' in tmdbData:
+            continue
+
+        embedding = model.encode(tmdbData['Overview'])
+
+        myNetflixDict = {  "movieId": movieId, 
+                            "movieName": movieName,
+                            "releaseYear": releaseYear,
+                            "genres": genres,
+                            "tags": tags,
+                            "tmdbId": tmdbId,
+                            "overview": tmdbData['Overview'],
+                            "tagline": tmdbData['Tagline'],
+                            "tmdbRating": tmdbData['TMDB Rating'],
+                            "posterLink": tmdbData['Poster'],
+                            "originalLanguage": tmdbData['Origingal Language'],
+                            "spokenLanguages": tmdbData['Spoken Languages'],
+                            "productionCompanies": tmdbData['Production Companies'],
+                            "overviewEmbedding": embedding.tolist()
+                         }
+        y = netflixCol.insert_one(myNetflixDict)
+          """
 
 # why 2324 instead of 2333
-print(mycol.count_documents({"netflix": True, "tags": []}))
+#print(mycol.count_documents({"netflix": True, "tags": []}))
+print(netflixCol.count_documents({}))
+print(netflixCol.count_documents({"tags": []}))
+print(netflixCol.count_documents({"genres": []}))
+print(netflixCol.count_documents({"tmdbId": None}))
+
+
+# exporting all netflix data into json 
+documents = netflixCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYear": 1, "genres": 1, "tags": 1, "originalLanguage": 1, "overview": 1, "overviewEmbedding": 1})
+documentsList = list(documents)
+
+with open('netflix_data_analysis.json', 'w') as file:
+    json.dump(documentsList, file, indent=4)
+ 
+
+# exporting all movielens data into json 
+documents = movieCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYear": 1,  "genres": 1, "tags": 1,  "tmdbId": 1})
+documentsList = list(documents)
+
+with open('all_movie_data_analysis.json', 'w') as file:
+    json.dump(documentsList, file, indent=4)
+
 
 """ for x in mycol.find({"netflix": True},{ "_id": 0, "movieName": 1, "genres": 1, "tags": 1, "language": 1 }):
   print(x) """
