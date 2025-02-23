@@ -1,0 +1,188 @@
+<!-- movie_search/templates/movie_search/search_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            margin-top: 30px;
+            color: #3c3c3c;
+            font-size: 2.5em;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form input {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1.1em;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .movie-list {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .movie-item:last-child {
+            border-bottom: none;
+        }
+
+        .movie-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .movie-description {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .movie-info {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #777;
+        }
+
+        .tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        /* Expandable Tag List */
+        .tags-container {
+            max-height: 100px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .tags-container.expand {
+            max-height: 500px;
+        }
+
+        .expand-tags {
+            display: inline-block;
+            color: #007bff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Search Movies</h1>
+
+    <!-- Language Selector -->
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <form method="get" action="#">
+            <label for="language">Select Language: </label>
+            <select name="language" id="language" onchange="this.form.submit()">
+                <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                <option value="es" {% if request.LANGUAGE_CODE == 'es' %}selected{% endif %}>Spanish</option>
+                <option value="fr" {% if request.LANGUAGE_CODE == 'fr' %}selected{% endif %}>French</option>
+                <!-- Add more languages as needed -->
+            </select>
+        </form>
+    </div>
+
+
+    <form method="get" action="/">
+        <input type="text" name="query" value="{{ query }}" placeholder="Search for a movie..." />
+        <button type="submit">Search</button>
+    </form>
+
+    {% if movies %}
+        <div class="movie-list">
+            <h2>Search Results</h2>
+            {% for movie in movies %}
+                <div class="movie-item">
+                    <div class="movie-title">{{ movie.movieName }}</div>
+                    <div class="movie-info">
+                        <strong>Release Year:</strong> {{ movie.releaseYear }} | 
+                        <strong>Genre:</strong>  {{ movie.genres|join:", " }}
+                    </div>
+                    <div class="tags">
+                        <div class="tags-container" id="tags-{{ movie.movieId }}">
+                            {% for tag in movie.tags %}
+                                <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        <span class="expand-tags" onclick="toggleTags('{{ movie.movieId }}')">Show more</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif form.is_submitted %}
+        <p style="text-align: center; font-size: 1.2em;">No movies found.</p>
+    {% endif %}
+
+    <script>
+        function toggleTags(movieId) {
+            const container = document.getElementById('tags-' + movieId);
+            container.classList.toggle('expand');
+        }
+    </script>
+</body>
+</html>
