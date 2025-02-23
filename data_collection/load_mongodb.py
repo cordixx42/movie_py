@@ -90,7 +90,7 @@ movieName: string,
 releaseYear: string,
 genres: [string],
 tags: [string],
-tmdbId: string/int
+tmdbId: float
 }
 '''
 
@@ -191,8 +191,39 @@ print(netflixCol.count_documents({"genres": []}))
 print(netflixCol.count_documents({"tmdbId": None}))
 
 
+
+document = netflixCol.find_one()
+
+
+
+
+# Inspect field types
+'''
+Field: _id, Type: <class 'bson.objectid.ObjectId'>
+Field: movieId, Type: <class 'int'>
+Field: movieName, Type: <class 'str'>
+Field: releaseYear, Type: <class 'str'>
+Field: genres, Type: <class 'list'>
+Field: tags, Type: <class 'list'>
+Field: tmdbId, Type: <class 'float'>
+Field: overview, Type: <class 'str'>
+Field: tagline, Type: <class 'str'>
+Field: tmdbRating, Type: <class 'float'>
+Field: posterLink, Type: <class 'str'>
+Field: originalLanguage, Type: <class 'str'>
+Field: spokenLanguages, Type: <class 'list'>
+Field: productionCompanies, Type: <class 'list'>
+Field: overviewEmbedding, Type: <class 'list'>
+'''
+if document:
+    for field, value in document.items():
+        print(f"Field: {field}, Type: {type(value)}")
+
+
+
 # exporting all netflix data into json 
-documents = netflixCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYear": 1, "genres": 1, "tags": 1, "originalLanguage": 1, "overview": 1, "overviewEmbedding": 1})
+""" 
+documents = netflixCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYear": 1, "genres": 1, "tags": 1, "tmdbId": 1, "originalLanguage": 1, "overview": 1, "overviewEmbedding": 1})
 documentsList = list(documents)
 
 with open('netflix_data_analysis.json', 'w') as file:
@@ -204,10 +235,9 @@ documents = movieCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYe
 documentsList = list(documents)
 
 with open('all_movie_data_analysis.json', 'w') as file:
-    json.dump(documentsList, file, indent=4)
+    json.dump(documentsList, file, indent=4) """
 
 
-""" for x in mycol.find({"netflix": True},{ "_id": 0, "movieName": 1, "genres": 1, "tags": 1, "language": 1 }):
-  print(x) """
+
 
 
