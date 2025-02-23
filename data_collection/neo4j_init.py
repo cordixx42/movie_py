@@ -77,6 +77,44 @@ def addMovieTagRelation(driver, i, t):
         database_="neo4j"
 )
     
+
+
+def addNetflixNode(driver):
+    driver.execute_query(
+        "CREATE (n:Netflix {name: 'Netflix'})", 
+        database_="neo4j"
+)
+    
+
+def addMovieNetflixRelation(driver, i):
+      driver.execute_query(
+        """
+        MATCH (m:Movie {movieId: $i}), (n:Netflix {name: 'Netflix'}) 
+        CREATE (m)-[:IS_ON]->(n);
+        """, 
+        i = i,
+        database_="neo4j"
+    )
+      
+def addLanguageNode(driver, l):
+    driver.execute_query(
+        "CREATE (n:Language {name: $l})", 
+        l = l,
+        database_="neo4j"
+)
+    
+def addMovieLanguageRelation(driver, i, l):
+    driver.execute_query(
+        """
+        MATCH (m:Movie {movieId: $i}), (l:Language {name: $l}) 
+        CREATE (m)-[:SPOKEN_IN]->(l);
+        """, 
+        i = i,
+        l = l,
+        database_="neo4j"
+)
+
+    
 # stretch 
 def addMovieTagWeightRelation(driver, i, t, w):
     driver.execute_query(

@@ -48,10 +48,10 @@ print('done creating genres')
 # 1.3 - CREATE MOVIES AND ADD MOVIE TO YEAR AND GENRE RELATION 
 for index, row in movieData.iterrows():
     addMovie(driver, row['title'], row['movieId'])
-    addMovieYearRelation(driver, row['title'], row['year'])
+    addMovieYearRelation(driver, row['movieId'], row['year'])
     sepGenreList = movieData.loc[index]['genres'].split(sep='|')
     for g in sepGenreList:
-        addMovieGenreRelation(driver, row['title'], g)
+        addMovieGenreRelation(driver, row['movieId'], g)
 
 print('done creating movies and movie genre year relation')
 
@@ -89,10 +89,41 @@ print('done done')
 
  """
 
+# 1.6 - CREATING A NETFLIX NODE WHICH ALL MOVIES IN NETFLIX ARE CONNECTED TO
+addNetflixNode(driver)
 
 
-for index, row in movieData.iterrows():
-    addMovieYearRelation(driver, row['movieId'], row['year'])
-    sepGenreList = movieData.loc[index]['genres'].split(sep='|')
-    for g in sepGenreList:
-        addMovieGenreRelation(driver, row['movieId'], g)
+
+# 1.7 - getting intersection of movielens and netflix movies 
+
+def normalize_v1(s):
+    # Remove all non-alphanumeric characters (special characters)
+    s = s.lower()
+    return re.sub(r'[^a-zA-Z0-9]', '', s)
+
+def normalize_v2(title):
+    # Remove punctuation and spaces 
+    title = title.lower()  
+    title = re.sub(r'\s+', ' ', title)  
+    title = re.sub(r'[^\w\s]', '', title) 
+    return title.strip()  
+
+netflixMovies = pd.read_json('whatsOnNetflix_2082025.json')
+print(netflixMovies.head())
+# NORMALIZATION MERGE using REGEX
+netflixMoviesNorm = netflixMovies.copy()
+movieDataNorm = movieData.copy()
+netflixMoviesNorm['norm_title'] = netflixMoviesNorm['Title'].apply(normalize_v1)
+movieDataNorm['norm_title'] = movieDataNorm['title'].apply(normalize_v1)
+
+merged = pd.merge(netflixMoviesNorm, movieDataNorm, left_on=['norm_title', 'Release Year'], right_on=['norm_title','year'], how='inner')
+
+
+# 1.8 - add languages 
+for l in merged['Language'].drop_duplicates():
+    addLanguageNode(driver, l)
+
+# 1.9 - add movie language and movie netflix relation
+for index, row in merged.iterrows():
+    addMovieLanguageRelation(driver, row['movieId'], row['Language'])
+    addMovieNetflixRelation(driver, row['movieId'])
