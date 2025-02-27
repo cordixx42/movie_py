@@ -39,14 +39,12 @@
             align-items: center;
         }
 
-        /* Left Side - Movie Poster */
         .movie-poster img {
             max-width: 300px;
             max-height: 450px;
             border-radius: 8px;
         }
 
-        /* Right Side - Movie Info */
         .movie-info {
             margin-left: 20px;
             flex-grow: 1;
@@ -61,7 +59,6 @@
             margin: 8px 0;
         }
 
-        /* Tagline Style */
         .movie-tagline {
             font-size: 1.2em;
             font-style: italic;
@@ -89,7 +86,6 @@
             text-decoration: underline;
         }
 
-        /* Additional styling for the new fields */
         .movie-meta {
             margin-top: 30px;
             background-color: #f0f0f0;
@@ -133,11 +129,10 @@
             font-size: 1.2em;
         }
 
-        /* TMDB Rating Style */
         .movie-rating {
             font-size: 1.2em;
             font-weight: bold;
-            color: #ffcc00; /* Golden color for rating */
+            color: #ffcc00;
             background-color: #333;
             padding: 5px 10px;
             border-radius: 20px;
@@ -146,16 +141,16 @@
         }
 
         .movie-rating strong {
-            font-weight: normal;  /* Make the "TMDB Rating" part normal weight */
+            font-weight: normal; 
         }
 
         .genre {
-        background-color: #ff8c00;  /* Orange color for genre */
+        background-color: #ff8c00;  
         color: white;
         padding: 5px 10px;
         border-radius: 12px;
         margin: 5px;
-        font-size: 1em;  /* Slightly smaller font size for genres */
+        font-size: 1em;  
         display: inline-block;
         }   
         
@@ -181,12 +176,12 @@
         }
 
         .movie-title {
-            color: #ff6347; /* Tomato color for movie title */
+            color: #ff6347; 
             text-transform: capitalize;
         }
 
         .language-title {
-            color: #4682b4; /* SteelBlue color for language title */
+            color: #4682b4; 
             text-transform: capitalize;
         }
 
@@ -208,16 +203,14 @@
             <h2>Recommendations</h2>
             {% for movie in matchedMovies %}
                 <div class="movie-item">
-                    <!-- Left Side - Movie Poster -->
+
                     <div class="movie-poster">
                         <img src="https://image.tmdb.org/t/p/original{{ movie.posterLink }}" alt="{{ movie.movieName }} Poster">
                     </div>
 
-                    <!-- Right Side - Movie Info -->
                     <div class="movie-info">
                         <h2>{{ movie.movieName }}</h2>
 
-                         <!-- Tagline -->
                          <div class="movie-tagline">
                             {{ movie.tagline }}
                         </div>
@@ -242,7 +235,6 @@
                         </div>
                     </div>
 
-                    <!-- New Movie Information -->
                     <div class="movie-meta">
                         <p class="movie-rating">{{ movie.tmdbRating }}</p>
                         <p> {{ language }}</p>

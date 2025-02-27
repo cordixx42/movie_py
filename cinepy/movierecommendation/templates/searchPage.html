@@ -108,7 +108,6 @@
             font-size: 1.1em;
         }
 
-        /* Expandable Tag List */
         .tags-container {
             max-height: 100px;
             overflow: hidden;
@@ -168,18 +167,11 @@
     </form>
     
 
-
-   <!--  <form method="get" action="/">
-        <input type="text" name="query" value="{{ query }}" placeholder="Search for a movie..." />
-        <button type="submit">Search</button>
-    </form> -->
-
     {% if movies %}
         <div class="movie-list">
             <h2>Search Results</h2>
             {% for movie in movies %}
                 <div class="movie-item">
-                    <!-- <a href="{% url 'movie_detail' movie.movieId %}" class="movie-title">{{ movie.movieName }}</a>-->
                     <a href="{% url 'movie_detail' movie.movieId %}?language={{ request.GET.language }}" class="movie-title">
                         {{ movie.movieName }}
                     </a>
@@ -212,7 +204,7 @@
 
 
     <script>
-        // Check if a language is already selected in localStorage
+        // store currently selected language 
         window.onload = function() {
             const storedLanguage = localStorage.getItem('selectedLanguage');
             if (storedLanguage) {
