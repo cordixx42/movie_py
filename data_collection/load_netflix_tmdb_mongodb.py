@@ -29,11 +29,11 @@ tagData = tagData.sort_values(by='user_count', ascending=False)
 # 1.2 - TMDB LINKS 
 tmdbLinks = pd.read_csv('movielens/links.csv')
 
-errcount = 0 
-errcount2 = 0
+
+# 1.3 - INSERTING NETFLIX MOVIES MERGED WITH TMDB DATA INTO NETFLIXTMDB COLLECTION IN MONGODB DATABASE (more than 4000 movies)
 
 '''
-all netflix intersect movielens movies
+data model
 {
 tmdbId: string/int,
 movieName: string,
@@ -51,17 +51,16 @@ overviewEmbedding: [byte]
 }
 '''
 
+errcount = 0 
+errcount2 = 0
 
-""" for index, row in netflixMovies.iterrows():
+for index, row in netflixMovies.iterrows():
     print(index)
     tmdb_api_key = ''
     tmdbData = TMDB_Metadata(tmdb_api_key, row['Title'], 0)
 
     if 'Error' in tmdbData:
         errcount += 1
-        #print(errcount)
-        #print(row['Title'])
-        #print()
         continue
     else:
     
@@ -91,27 +90,15 @@ overviewEmbedding: [byte]
                                 "productionCompanies": tmdbData['Production Companies'],
                                 "overviewEmbedding": embedding.tolist()
                          }
-        y = netflixTmdbCol.insert_one(myNetflixTmdbDict) """
+        y = netflixTmdbCol.insert_one(myNetflixTmdbDict)
 
 print(f'movies not matched in tmdb {errcount}')
 print(f'movies not matched in movielens {errcount2}')
 
-# export to json document
+# 1.4 - EXPORT DATA INTO JSON 
+
 """ documents = netflixTmdbCol.find({},{"_id": 0, "tmdbId": 1, "movieName": 1, "releaseYear": 1, "genres": 1, "tags": 1, "originalLanguage": 1, "overview": 1, "overviewEmbedding": 1})
 documentsList = list(documents)
 
 with open('netflix_tmdb_match.json', 'w') as file:
     json.dump(documentsList, file, indent=4) """
-
-data = pd.DataFrame(list(netflixTmdbCol.find()))
-non_english = data[data['originalLanguage'] != 'en']
-language_counts = non_english['originalLanguage'].value_counts()
-
-# 10 most popular languages excluding English
-top_10_languages = language_counts.head(25)
-
-plt.figure(figsize=(10, 5))
-top_10_languages.plot(kind='bar', title='Top 25 Most Popular Languages')
-plt.xlabel('Language')
-plt.ylabel('Count')
-plt.show()

@@ -6,6 +6,36 @@ from django.http import HttpResponse
 from .likeXbutY import likeXbutY
 
 
+LANGUAGES_TOP_25 = {
+    'en': 'English',
+    'es': 'Spanish',
+    'hi': 'Hindi',
+    'ja': 'Japanese',
+    'fr': 'French',
+    'id': 'Indonesian',
+    'te': 'Telugu',
+    'ta': 'Tamil',
+    'tl': 'Tagalog',
+    'ar': 'Arabic',
+    'pt': 'Portuguese',
+    'it': 'Italian',
+    'de': 'German',
+    'ko': 'Korean',
+    'zh': 'Chinese',
+    'pl': 'Polish',
+    'tr': 'Turkish',
+    'ml': 'Malayalam',
+    'th': 'Thai',
+    'nl': 'Dutch',
+    'sv': 'Swedish',
+    'ms': 'Malay',
+    'cn': 'Chinese (Simplified)',
+    'no': 'Norwegian',
+    'vi': 'Vietnamese',
+    'da': 'Danish',
+}
+
+
 def home(request):
     query = request.GET.get('query', '') 
     movies = []
@@ -21,7 +51,7 @@ def movie_detail(request, movieId):
 
     matchedMovies = get_netflix_movies(matchedMovieIds)
 
-    return render(request, 'movieDetail.html', {'movie': movie, 'matchedFilms': matchedMovieIds, 'matchedMovies': matchedMovies})
+    return render(request, 'movieDetail.html', {'movie': movie, 'matchedMovies': matchedMovies, 'language': LANGUAGES_TOP_25.get(selected_language)})
 
     
 

@@ -125,5 +125,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-MONGO_URI = "mongodb://localhost:27017"  # Replace with your MongoDB URI
-MONGO_DB_NAME = "moviepy"  # Replace with your MongoDB database name
+MONGO_URI = "mongodb://localhost:27017"  
+MONGO_DB_NAME = "moviepy" 

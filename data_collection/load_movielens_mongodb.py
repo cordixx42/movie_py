@@ -9,14 +9,12 @@ import json
 
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')  # Lightweight and fast model
 
-
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["moviepy"]
 movieCol = mydb["movies"]
 
 #movieCol.delete_many({})
 #netflixCol.delete_many({})
-
 
 # 1.1 - CLEANING MOVIELENS MOVIE DATA
 movieData = pd.read_csv('movielens/movies.csv')
@@ -44,9 +42,10 @@ tagData = tagData.sort_values(by='user_count', ascending=False)
 tmdbLinks = pd.read_csv('movielens/links.csv')
 
 
-# insert into collection movies
+# 1.4 - INSERTING MOVIELENS MOVIES INTO THE COLLECTION MOVIES IN MONGODB DATABASE (more than 80000 movies)
+
 '''
-all movielens movies 
+data model
 {
 movieId: int,
 movieName: string,
@@ -57,9 +56,7 @@ tmdbId: float
 }
 '''
 
-
 i = 0 
-
 for index, row in movieData.iterrows():
     movieId = row['movieId']
     movieName = row['title']
@@ -90,7 +87,9 @@ for index, row in movieData.iterrows():
 
     x = movieCol.insert_one(mydict)
 
-# exporting all movielens data into json 
+
+# 1.5 - EXPORTING DATA INTO JSON 
+
 """
 # exporting all movielens data into json 
 documents = movieCol.find({},{"_id": 0, "movieId": 1, "movieName": 1, "releaseYear": 1,  "genres": 1, "tags": 1,  "tmdbId": 1})

@@ -129,16 +129,41 @@
     </style>
 </head>
 <body>
-    <h1>Search Movies</h1>
+    <h1>CinePy</h1>
 
-    <form method="get" action="/">
-        <input type="text" name="query" value="{{ query }}" placeholder="Search for a movie..." />
-        <select id="language" name="language" onchange="saveLanguagePreference()">
+    <form method="get" action="/" style="display: flex; flex-direction: column;">
+        <label for="query" style="font-size: 16px; font-family: 'Cursive', sans-serif; color: grey;">Movie Name</label>
+        <input type="text" name="query" value="{{ query }}" placeholder="Search for a movie..." style="margin-bottom: 20px;"/>
+        <label for="language" style="font-size: 16px; margin-bottom: 8px; font-family: 'Cursive', sans-serif; color: grey;">Language</label>
+        <select id="language" name="language" onchange="saveLanguagePreference()" style="font-size: 25px; margin-bottom: 20px;">
             <option value="en" {% if request.GET.language == 'en' %}selected{% endif %}>English</option>
-            <option value="es" {% if request.GET.language == 'es' %}selected{% endif %}>Spanish</option>
-            <option value="zh" {% if request.GET.language == 'zh' %}selected{% endif %}>Chinese</option>
+            <option value="es" {% if request.GET.language == 'es' %}selected{% endif %}>Spanish</option> 
+            <option value="hi" {% if request.GET.language == 'hi' %}selected{% endif %}>Hindi</option>
+            <option value="ja" {% if request.GET.language == 'ja' %}selected{% endif %}>Japanese</option>
             <option value="fr" {% if request.GET.language == 'fr' %}selected{% endif %}>French</option>
+            <option value="id" {% if request.GET.language == 'id' %}selected{% endif %}>Indonesian</option>
+            <option value="te" {% if request.GET.language == 'te' %}selected{% endif %}>Telugu</option>
+            <option value="ta" {% if request.GET.language == 'ta' %}selected{% endif %}>Tamil</option>
+            <option value="tl" {% if request.GET.language == 'tl' %}selected{% endif %}>Tagalog</option>
+            <option value="ar" {% if request.GET.language == 'ar' %}selected{% endif %}>Arabic</option>
+            <option value="pt" {% if request.GET.language == 'pt' %}selected{% endif %}>Portuguese</option>
+            <option value="it" {% if request.GET.language == 'it' %}selected{% endif %}>Italian</option>
+            <option value="de" {% if request.GET.language == 'de' %}selected{% endif %}>German</option>
+            <option value="ko" {% if request.GET.language == 'ko' %}selected{% endif %}>Korean</option>
+            <option value="zh" {% if request.GET.language == 'zh' %}selected{% endif %}>Chinese</option>
+            <option value="pl" {% if request.GET.language == 'pl' %}selected{% endif %}>Polish</option>
+            <option value="tr" {% if request.GET.language == 'tr' %}selected{% endif %}>Turkish</option>
+            <option value="ml" {% if request.GET.language == 'ml' %}selected{% endif %}>Malayalam</option>
+            <option value="th" {% if request.GET.language == 'th' %}selected{% endif %}>Thai</option>
+            <option value="nl" {% if request.GET.language == 'nl' %}selected{% endif %}>Dutch</option>
+            <option value="sv" {% if request.GET.language == 'sv' %}selected{% endif %}>Swedish</option>
+            <option value="ms" {% if request.GET.language == 'ms' %}selected{% endif %}>Malay</option>
+            <option value="cn" {% if request.GET.language == 'cn' %}selected{% endif %}>Chinese (Simplified)</option>
+            <option value="no" {% if request.GET.language == 'no' %}selected{% endif %}>Norwegian</option>
+            <option value="vi" {% if request.GET.language == 'vi' %}selected{% endif %}>Vietnamese</option>
+            <option value="da" {% if request.GET.language == 'da' %}selected{% endif %}>Danish</option>
         </select>
+        
         <button type="submit">Search</button>
     </form>
     

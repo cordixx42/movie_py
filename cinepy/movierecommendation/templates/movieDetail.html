@@ -95,6 +95,7 @@
             background-color: #f0f0f0;
             padding: 20px;
             border-radius: 8px;
+            text-align: center;
         }
 
         .movie-meta p {
@@ -103,6 +104,12 @@
 
         .movie-meta strong {
             font-weight: bold;
+        }
+
+        .movie-meta p:nth-child(2) {
+        text-transform: uppercase;
+        font-size: 1.1em;
+        font-weight: bold;
         }
 
         .production-companies {
@@ -150,11 +157,51 @@
         margin: 5px;
         font-size: 1em;  /* Slightly smaller font size for genres */
         display: inline-block;
-        }       
+        }   
+        
+        
+        .movie-title-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .movie-title, .language-title {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 2em;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .title-prefix {
+            font-size: 0.8em;
+            color: #555;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+
+        .movie-title {
+            color: #ff6347; /* Tomato color for movie title */
+            text-transform: capitalize;
+        }
+
+        .language-title {
+            color: #4682b4; /* SteelBlue color for language title */
+            text-transform: capitalize;
+        }
+
     </style>
 </head>
 <body>
-    <h1>{{ movie.movieName }}</h1>
+    <div class="movie-title-container">
+        <h1 class="movie-title">
+            <span class="title-prefix">Selected Movie:</span> {{ movie.movieName }}
+        </h1>
+        <h1 class="language-title">
+            <span class="title-prefix">Selected Language:</span> {{ language }}
+        </h1>
+    </div>
+    
     
     <div class="movie-list">
         {% if matchedMovies %}
@@ -175,7 +222,7 @@
                             {{ movie.tagline }}
                         </div>
 
-                        <p><strong>Release Year:</strong> <span class="release-year" data-date="{{ movie.releaseYear }}"></span></p>
+                        <p><strong>Release Date:</strong> <span class="release-year" data-date="{{ movie.releaseYear }}"></span></p>
 
 
                         <div class="tags-container" id="genre-{{ movie.tmdbId }}">
@@ -198,7 +245,7 @@
                     <!-- New Movie Information -->
                     <div class="movie-meta">
                         <p class="movie-rating">{{ movie.tmdbRating }}</p>
-                        <p><strong>Original Language:</strong> {{ movie.originalLanguage }}</p>
+                        <p> {{ language }}</p>
 
                         <div class="production-companies">
                             <strong>Production Companies:</strong>
