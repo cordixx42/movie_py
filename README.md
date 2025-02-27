@@ -46,7 +46,7 @@ Returns a recommend film (or films) that are highest ranked in similarity score
 Web-interface with django will have dynamic search feature and return film description and poster
 mongodb for datastorage
 
-### File explinations
+### File explainations
 Please call out what each file does here. 
 
 Data Collection
@@ -82,7 +82,4 @@ Search for a movie which you like.
 The search results will show the most similar movies to what you typed in. 
 Select the search which matches what you intended from the table of movies
 That will bring you into a list of movies w
-
-# Grading rubric
-Source code (40 points), documentation (10 points), user instructions (5 points), abstract (5 points)
 
