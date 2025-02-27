@@ -4,24 +4,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ movie.movieName }} - Movie Details</title>
-    <!-- Add your styling here -->
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .movie-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Left Side - Movie Poster */
+        .movie-poster img {
+            max-width: 300px;
+            max-height: 450px;
+            border-radius: 8px;
+        }
+
+        /* Right Side - Movie Info */
+        .movie-info {
+            margin-left: 20px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .movie-info h2 {
+            margin-top: 0;
+        }
+
+        .movie-info p {
+            margin: 8px 0;
+        }
+
+        /* Tagline Style */
+        .movie-tagline {
+            font-size: 1.2em;
+            font-style: italic;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            margin: 5px;
+            font-size: 0.8em; 
+        }
+
+        .expand-tags {
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* Additional styling for the new fields */
+        .movie-meta {
+            margin-top: 30px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .movie-meta p {
+            margin: 10px 0;
+        }
+
+        .movie-meta strong {
+            font-weight: bold;
+        }
+
+        .production-companies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .production-company {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        /* TMDB Rating Style */
+        .movie-rating {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffcc00; /* Golden color for rating */
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .movie-rating strong {
+            font-weight: normal;  /* Make the "TMDB Rating" part normal weight */
+        }
+
+        .genre {
+        background-color: #ff8c00;  /* Orange color for genre */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 12px;
+        margin: 5px;
+        font-size: 1em;  /* Slightly smaller font size for genres */
+        display: inline-block;
+        }       
+    </style>
 </head>
 <body>
     <h1>{{ movie.movieName }}</h1>
-    <div class="movie-poster">
-        <img src="https://image.tmdb.org/t/p/original{{ tmdbData.Poster }}" alt="{{ movie.movieName }} Poster" style="max-width: 300px; max-height: 450px;">
-    </div>
-    <div class="movie-info">
-        <p><strong>Release Year:</strong> {{ movie.releaseYear }}</p>
-        <p><strong>Genre:</strong>  {{ movie.genres|join:", " }}</p>
-        <p><strong>Description:</strong> {{ movie.description }}</p>
-        <div class="tags">
-            <p><strong>Tags:</strong></p>
-            {% for tag in movie.tags %}
-                <span class="tag">{{ tag }}</span>
+    
+    <div class="movie-list">
+        {% if matchedMovies %}
+            <h2>Recommendations</h2>
+            {% for movie in matchedMovies %}
+                <div class="movie-item">
+                    <!-- Left Side - Movie Poster -->
+                    <div class="movie-poster">
+                        <img src="https://image.tmdb.org/t/p/original{{ movie.posterLink }}" alt="{{ movie.movieName }} Poster">
+                    </div>
+
+                    <!-- Right Side - Movie Info -->
+                    <div class="movie-info">
+                        <h2>{{ movie.movieName }}</h2>
+
+                         <!-- Tagline -->
+                         <div class="movie-tagline">
+                            {{ movie.tagline }}
+                        </div>
+
+                        <p><strong>Release Year:</strong> <span class="release-year" data-date="{{ movie.releaseYear }}"></span></p>
+
+
+                        <div class="tags-container" id="genre-{{ movie.tmdbId }}">
+                            {% for genre in movie.genres %}
+                                <span class="genre">{{ genre }}</span>
+                            {% endfor %}
+                        </div>
+                        <p><strong>Description:</strong> {{ movie.overview }}</p>
+
+
+                        <div class="tags">
+                            <div class="tags-container" id="tags-{{ movie.tmdbId }}">
+                                {% for tag in movie.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Movie Information -->
+                    <div class="movie-meta">
+                        <p class="movie-rating">{{ movie.tmdbRating }}</p>
+                        <p><strong>Original Language:</strong> {{ movie.originalLanguage }}</p>
+
+                        <div class="production-companies">
+                            <strong>Production Companies:</strong>
+                            {% for company in movie.productionCompanies %}
+                                <span class="production-company">{{ company }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </div>
+        {% elif form.is_submitted %}
+            <p style="text-align: center; font-size: 1.2em;">No movies found.</p>
+        {% endif %}
     </div>
-    <a href="/">Back to Search</a>  <!-- You can add a back button -->
+
+    <div class="back-btn">
+        <a href="/">Back to Search</a>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const releaseDates = document.querySelectorAll('.release-year');
+            
+            releaseDates.forEach(function(element) {
+                const date = new Date(element.getAttribute('data-date'));
+                const options = { year: 'numeric', month: 'long' };
+                const formattedDate = date.toLocaleDateString('en-US', options);
+                element.textContent = formattedDate;
+            });
+        });
+    </script>
+    
 </body>
 </html>
