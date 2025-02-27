@@ -1,5 +1,6 @@
 # movie_py
-Team Mango Rhubarb Lychee Py
+Team: Mango Rhubarb Lychee Py
+
 Team Name: MaRuLy Py
 
 ## Project: CinePy
@@ -7,10 +8,10 @@ Team Name: MaRuLy Py
 This project using Selenium to dynamically scrape a site which stores a table of films that are avaialble to watch on netflix. We use a previously downloaded file which is maintained by Movie Lens out of University of Minnesota to add any genre tags to the available films. We also gather movie data for each of the Netlix movies by using an API call to TMDb. This call checks that the film exists and then returns all the summaries/descriptions of each of those films. By using Sentence_transformers, we perform a weighted average of bert embedding based on genres and summaries then store this data in our MongoDB database. Using Django, we created a web-app which allows a user to search for a film and specify a language. With that done, the user will then be provided with movies which are similar to the user's search. 
 
 ### Data Sources:
-(csv) MovieLens - a large dataset of films with corresponding metadata
-(webScraped) whatsOnNetflix.com - Netflix availability and genre information
-(api) theMovieDB - source for genres, metadata, and movie-posters
-(python) django for web-dev, selenium for web-scraping
+- (csv) MovieLens - a large dataset of films with corresponding metadata
+- (webScraped) whatsOnNetflix.com - Netflix availability and genre information
+- (api) theMovieDB - source for genres, metadata, and movie-posters
+- (python) django for web-dev, selenium for web-scraping
 
 ### User Instructions
 NEEDED: 
