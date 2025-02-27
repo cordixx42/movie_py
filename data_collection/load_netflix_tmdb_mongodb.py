@@ -12,17 +12,12 @@ model = SentenceTransformer('paraphrase-MiniLM-L6-v2')  # Lightweight and fast m
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["moviepy"]
-movieCol = mydb["movies"]
-netflixCol = mydb["netflix"]
 netflixTmdbCol = mydb["netflixTmdb"]
-
-#movieCol.delete_many({})
-# netflixTmdbCol.delete_many({})
 
 netflixMovies = pd.read_json('whatsOnNetflix_2082025.json')
 print(netflixMovies.head())
 
-# 1.3 - TAG PREPROCESSING
+# 1.1 - TAG PREPROCESSING
 tagData = pd.read_csv('movielens/tags.csv')
 #convert all tags to lower case 
 tolower = lambda s: str(s).lower()
@@ -31,15 +26,31 @@ tagData['tag'] = tagData['tag'].apply(tolower)
 tagData = tagData.groupby(['movieId', 'tag'])['userId'].nunique().reset_index(name='user_count')
 tagData = tagData.sort_values(by='user_count', ascending=False)
 
-# tags_for_movie = tagData.loc[tagData['movieId'] == 1, 'tag'].tolist()
-# print(tags_for_movie)
-
-# 1.4 - TMDB LINKS 
+# 1.2 - TMDB LINKS 
 tmdbLinks = pd.read_csv('movielens/links.csv')
-
 
 errcount = 0 
 errcount2 = 0
+
+'''
+all netflix intersect movielens movies
+{
+tmdbId: string/int,
+movieName: string,
+releaseYear: string,
+genres: [string],
+tags: [string],
+overview: string,
+tagline: string,
+tmdbRating: float,
+posterLink: string, 
+originalLanguage: string,
+spokenLanguages: [string],
+productionCompanies: [string],
+overviewEmbedding: [byte]
+}
+'''
+
 
 """ for index, row in netflixMovies.iterrows():
     print(index)
@@ -85,6 +96,7 @@ errcount2 = 0
 print(f'movies not matched in tmdb {errcount}')
 print(f'movies not matched in movielens {errcount2}')
 
+# export to json document
 """ documents = netflixTmdbCol.find({},{"_id": 0, "tmdbId": 1, "movieName": 1, "releaseYear": 1, "genres": 1, "tags": 1, "originalLanguage": 1, "overview": 1, "overviewEmbedding": 1})
 documentsList = list(documents)
 
