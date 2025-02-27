@@ -20,6 +20,7 @@ NEEDED:
 - the webapp assumes the data to be already stored in mongodb collections
   - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
   - run the files <code>data_collection/load_movielens_mongodb.py</code> and <code>load_netflix_tmdb_mongodb.py</code>
+  - add tmdb api key into the function <code>movieDetail</code> in the file <code>movierecommendation/views.py</code>
   - start the web app by going into the top-level <code>cinepy</code> and run <code>python manage.py runserver</code>
   - the web app should be accessible on <code>localhost:8000</code>
 - Which files are needed
@@ -46,20 +47,20 @@ Returns a recommend film (or films) that are highest ranked in similarity score
 Web-interface with django will have dynamic search feature and return film description and poster
 mongodb for datastorage
 
-### File explainations
+### File explanations
 Please call out what each file does here. 
 
 Data Collection
-- whats_on_netflix.py - Dynamically scrapes WhatsOnNetflix.com's Library table of all the Netlflix movies available and saves them to a dataframe. 
-- tmdb_search.py - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expresses as a dicitnary as well. 
-- movie_lens.py
-- etc...
+- <code>whats_on_netflix.py</code> - Dynamically scrapes WhatsOnNetflix.com's Library table of all the Netlflix movies available and saves them to a dataframe. 
+- <code>tmdb_search.py</code> - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expressed as a dictionary as well. 
+- <code>load_movielens_mongodb.py</code> - 
+- <code>load_netflix_tmdb_mongodb.py</code> - 
 Data Analysis
-- WONanalysis.ipynb - A Jupyter Notebook which shows some simple analysis of the Netflix data. Years, languages, and top performers. 
-Recomendation Engine
-- likeXbutY.py - Like XbutY matches target film against by a weighted average of bert embedding based on genres and summaries of those films. Filters by language as well.  
+- <code>WONanalysis.ipynb</code> - A Jupyter Notebook which shows some simple analysis of the Netflix data. Years, languages, and top performers. 
+Recommendation Engine
+- <code>likeXbutY.py</code> - Like XbutY matches target film against by a weighted average of bert embedding based on genres and summaries of those films. Filters by language as well. 
 Web App
-- name of file. 
+- <code>cinepy</code> - this directory contains the web app which allows users to select a movie and a target language and get movie recommendations in the target language similar to the selected movie. The <code>movierecommendation/db.py</code> file establishes a connection to the mongodb database and defines functions to query the movielens and netflix movies. The <code>movierecommendation/views.py</code> contains the logic generating the web views, the HTML templates are in <code>movierecommendation/templates/</code>
 
 ### code walkthrough
 - Process: (MongoDB, Selenium, Requests)
@@ -70,7 +71,7 @@ Movie lens loaded into mongoDB, include all tags.
 Matched TMDB to Netlix data, added TMDB data to those movies. and put into another table
 Calculate BERT embedding for genre and overview of each movie in TMDB enhanced Netflix table. 
 
-- Recomendation: (Sentence_transformers)
+- Recommendation: (Sentence_transformers)
 Take a movie lens movie -> get TMDB data -> generate BERT embeddings
 We use the TMDB data to get the original language for the movie, and get the 
 Compare that data against every movie in the TMDB enhanced Netflix table leading to a list of results. 
