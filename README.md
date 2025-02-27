@@ -5,7 +5,7 @@ Team Name: MaRuLy Py
 
 ## Project: CinePy
 ### Abstract
-This project using Selenium to dynamically scrape a site which stores a table of films that are avaialble to watch on netflix. We use a previously downloaded file which is maintained by Movie Lens out of University of Minnesota to add any genre tags to the available films. We also gather movie data for each of the Netlix movies by using an API call to TMDb. This call checks that the film exists and then returns all the summaries/descriptions of each of those films. By using Sentence_transformers, we perform a weighted average of bert embedding based on genres and summaries then store this data in our MongoDB database. Using Django, we created a web-app which allows a user to search for a film and specify a language. With that done, the user will then be provided with movies which are similar to the user's search. 
+This project using Selenium to dynamically scrape a site which stores a table of films that are available to watch on Netflix. We use a previously downloaded file which is maintained by Movie Lens out of University of Minnesota to add any genre tags to the available films. We also gather movie data for each of the Netlix movies by using an API call to TMDb. This call checks that the film exists and then returns all the summaries/descriptions of each of those films. By using Sentence_transformers, we perform a weighted average of BERT embedding based on genres and summaries then store this data in our MongoDB database. Using Django, we created a web-app which allows a user to search for a film and specify a language. With that done, the user will then be provided with movies which are similar to the user's search. 
 
 ### Data Sources:
 - (csv) MovieLens - a large dataset of films with corresponding metadata
@@ -15,8 +15,13 @@ This project using Selenium to dynamically scrape a site which stores a table of
 
 ### User Instructions
 NEEDED: 
-- Libraries which must be downloaded (and from where, specify pip or anaconda or whatever)
-- Recomended environment (Spyder/Jupyter/VS etc..)
+- all the libraries needed are in the requirement.txt file and can be installed using <code>pip install -r /path/to/requirements.txt</code>
+- the python files in the <code>data_collection</code>, <code>data_analysis</code> and <code>filtered_matching</code> directories can be executed directly <code>python \<filename\>.py</code>
+- the webapp assumes the data to be already stored in mongodb collections
+  - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
+  - run the files <code>data_collection/load_movielens_mongodb.py</code> and <code>load_netflix_tmdb_mongodb.py</code>
+  - start the web app by going into the top-level <code>cinepy</code> and run <code>python manage.py runserver</code>
+  - the web app should be accessible on <code>localhost:8000</code>
 - Which files are needed
 - Where files are located
 - What commands to be used
