@@ -35,9 +35,8 @@ Startup Instructions:
    - to load the data, run: 
     - <code>data_collection/load_movielens_mongodb.py</code> 
     - <code>load_netflix_tmdb_mongodb.py</code> add TMDB API Key in line 59
- - Add TMDB API Key to the files:
-   - in file: <code>movierecommendation/views.py</code>)
-    - in function: <code>movieDetail</code>
+ - Add TMDB API Key:
+   - in file: <code>movierecommendation/views.py</code> in function: <code>movieDetail</code>
  - Start the webapp:
    - from <code>cinepy</code>, run <code>python manage.py runserver</code>
  - Access the webapp:
@@ -72,6 +71,7 @@ Data Collection
 - <code>tmdb_search.py</code> - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expressed as a dictionary as well. 
 - <code>load_movielens_mongodb.py</code> - A script which loads all Movielens movies with information into a Mongodb collection
 - <code>load_netflix_tmdb_mongodb.py</code> - A script which takes all Netflix movies from the WhatsOnNetflix scraped data, adds information using the tmdb API call and loads the movies into another Mongodb collection
+- <code>exploring_</code> contain code which was for experimenting with movielens and the use of the graph database Neo4j
 Data Analysis
 - <code>WONanalysis.ipynb</code> - A Jupyter Notebook which shows some simple analysis of the Netflix data. Years, languages, and top performers. 
 Recommendation Engine
