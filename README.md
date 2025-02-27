@@ -18,7 +18,7 @@ NEEDED:
 - all the libraries needed are in the requirement.txt file and can be installed using <code>pip install -r /path/to/requirements.txt</code>
 - the python files in the <code>data_collection</code>, <code>data_analysis</code> and <code>filtered_matching</code> directories can be executed directly <code>python \<filename\>.py</code>
 - the webapp assumes the data to be already stored in mongodb collections
-  - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
+  - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/) and start the service
   - run the files <code>data_collection/load_movielens_mongodb.py</code> and <code>load_netflix_tmdb_mongodb.py</code>
   - add tmdb api key into the function <code>movieDetail</code> in the file <code>movierecommendation/views.py</code>
   - start the web app by going into the top-level <code>cinepy</code> and run <code>python manage.py runserver</code>
@@ -77,10 +77,11 @@ We use the TMDB data to get the original language for the movie, and get the
 Compare that data against every movie in the TMDB enhanced Netflix table leading to a list of results. 
 
 - Webapp logic: (Django)
-Once the webapp is launched. Navigate to the websight
-Select a language which is desired.
-Search for a movie which you like. 
-The search results will show the most similar movies to what you typed in. 
-Select the search which matches what you intended from the table of movies
-That will bring you into a list of movies w
+Once the webapp is launched. Navigate to the website on <code>localhost:8000</code>
+Select a target language you want to watch a movie in.
+Search for a movie which you like.
+Click on the movie name.
+This will redirect you to another page which shows the most similar movies in the target language you selected. 
+
+
 
