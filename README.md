@@ -11,22 +11,41 @@ A web-based recommendation app that takes a film [X] and a language [Y] as input
 - (csv) MovieLens - a large dataset of films with corresponding metadata
 - (webScraped) whatsOnNetflix.com - Netflix availability and genre information
 - (api) theMovieDB - source for genres, metadata, and movie-posters
-- (python) django for web-dev, selenium for web-scraping
+
+### Additional Python Packages:
+ - Django - web-dev
+ - Selenium - web-scraping
+ - Sentence_Transformers - BERT embeddings
 
 ### User Instructions
-NEEDED: 
-- all the libraries needed are in the requirement.txt file and can be installed using <code>pip install -r /path/to/requirements.txt</code>
-- the python files in the <code>data_collection</code>, <code>data_analysis</code> and <code>filtered_matching</code> directories can be executed directly <code>python \<filename\>.py</code>
-- the webapp assumes the data to be already stored in mongodb collections
-  - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/) and start the service
-  - run the files <code>data_collection/load_movielens_mongodb.py</code> and <code>load_netflix_tmdb_mongodb.py</code>
-  - add tmdb api key into the function <code>movieDetail</code> in the file <code>movierecommendation/views.py</code>
-  - start the web app by going into the top-level <code>cinepy</code> and run <code>python manage.py runserver</code>
-  - the web app should be accessible on <code>localhost:8000</code>
-- Which files are needed
-- Where files are located
-- What commands to be used
-
+Required packages:
+ - (requirement.txt) file lists all required packages
+ - - to install, run <code>pip install -r /path/to/requirements.txt</code>
+Required other software:
+ - (MongoDB Community Edition) - to install, run:
+ - - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
+Required sub-directories:
+ - <code>data_collection</code>,
+ - <code>data_analysis</code>, and
+ - <code>filtered_matching</code>
+Startup Instructions:
+ - Initialize database
+ - - to start the service, run:
+ - - - (appleOS)
+ - - to load the data, run: 
+ - - - <code>data_collection/load_movielens_mongodb.py</code>
+ - - - <code>load_netflix_tmdb_mongodb.py</code>
+ - Add TMDB API Key to the files:
+ - - in file: <code>movierecommendation/views.py</code>)
+ - - - in function: <code>movieDetail</code>
+ - Start the webapp:
+ - - from <code>cinepy</code>, run <code>python manage.py runserver</code>:
+ - Access the webapp:
+ - - <code>localhost:8000</code>
+ - - Input movie name and target language
+ - - Click <Search>
+ - - Click desired film's name
+ - - Select a new film to watch on Netflix
 
 ### Project One-line Description:
 A recommendation app that takes a film [X] and language [Y] as an input and returns a film similar to the input film, but produced in the input language.
@@ -47,9 +66,7 @@ Returns a recommend film (or films) that are highest ranked in similarity score
 Web-interface with django will have dynamic search feature and return film description and poster
 mongodb for datastorage
 
-### File explanations
-Please call out what each file does here. 
-
+### File Explanations:
 Data Collection
 - <code>whats_on_netflix.py</code> - Dynamically scrapes WhatsOnNetflix.com's Library table of all the Netlflix movies available and saves them to a dataframe. 
 - <code>tmdb_search.py</code> - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expressed as a dictionary as well. 
@@ -62,7 +79,7 @@ Recommendation Engine
 Web App
 - <code>cinepy</code> - this directory contains the web app which allows users to select a movie and a target language and get movie recommendations in the target language similar to the selected movie. The <code>movierecommendation/db.py</code> file establishes a connection to the mongodb database and defines functions to query the movielens and netflix movies. The <code>movierecommendation/views.py</code> contains the logic generating the web views, the HTML templates are in <code>movierecommendation/templates/</code>
 
-### code walkthrough
+###Code Walkthrough
 - Process: (MongoDB, Selenium, Requests)
 whats_on_netflix - scrape the website and save every netflix movie available. 
 then set up TMDB API and search script.
