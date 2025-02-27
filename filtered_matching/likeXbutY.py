@@ -8,7 +8,8 @@ from sentence_transformers import SentenceTransformer
 from tmdb_search import TMDB_Metadata 
 
 #Import Required Data#
-dfNtflx = pd.read_json('../data_collection/netflix_data_analysis.json')
+# dfNtflx = pd.read_json('../data_collection/netflix_data_analysis.json')
+dfNtflx = pd.read_json('../data_collection/netflix_tmdb_match.json')
 dfALL = pd.read_json('../data_collection/all_movie_data_analysis.json')
 genreEmbeddings=pd.read_csv('genreEmbeddings.csv',index_col=0)
 overviewEmbeddings=pd.read_csv('overviewEmbeddings.csv',index_col=0)
@@ -17,7 +18,7 @@ with open('originalLanguages.json', 'r') as f: originalLanguages = json.load(f)
 #Initialize BERT model#
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-def likeXbutY(tmdbId,tmdb_api_key,originalLanguage=None,alpha=0.6,N=None,dfNtflx=dfNtflx,dfALL=dfALL,genreEmbeddings=genreEmbeddings,overviewEmbeddings=overviewEmbeddings,originalLanguages=originalLanguages):
+def likeXbutY(tmdbId,tmdb_api_key,originalLanguage=None,alpha=0.6,N=None,dfALL=dfALL,genreEmbeddings=genreEmbeddings,overviewEmbeddings=overviewEmbeddings,originalLanguages=originalLanguages):
     #Validate tmdbId#
     try: tmbdid = int(tmdbId)
     except: raise TypeError('timbdId not coercible to type INT')
