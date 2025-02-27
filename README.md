@@ -20,32 +20,31 @@ A web-based recommendation app that takes a film [X] and a language [Y] as input
 ### User Instructions
 Required packages:
  - (requirement.txt) file lists all required packages
- - - to install, run <code>pip install -r /path/to/requirements.txt</code>
+   - to install, run <code>pip install -r /path/to/requirements.txt</code>
 Required other software:
  - (MongoDB Community Edition) - to install, run:
- - - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
+   - install [MongoDB](https://www.mongodb.com/docs/v7.0/administration/install-community/)
 Required sub-directories:
  - <code>data_collection</code>,
  - <code>data_analysis</code>, and
  - <code>filtered_matching</code>
 Startup Instructions:
  - Initialize database
- - - to start the service, run:
- - - - (appleOS)
- - - to load the data, run: 
- - - - <code>data_collection/load_movielens_mongodb.py</code>
- - - - <code>load_netflix_tmdb_mongodb.py</code>
- - Add TMDB API Key to the files:
- - - in file: <code>movierecommendation/views.py</code>)
- - - - in function: <code>movieDetail</code>
+   - to start the service, run:
+    - (appleOS) <code>brew services start mongodb/brew/mongodb-community</code>
+   - to load the data, run: 
+    - <code>data_collection/load_movielens_mongodb.py</code> 
+    - <code>load_netflix_tmdb_mongodb.py</code> add TMDB API Key in line 59
+ - Add TMDB API Key:
+   - in file: <code>movierecommendation/views.py</code> in function: <code>movieDetail</code>
  - Start the webapp:
- - - from <code>cinepy</code>, run <code>python manage.py runserver</code>:
+   - from <code>cinepy</code>, run <code>python manage.py runserver</code>
  - Access the webapp:
- - - <code>localhost:8000</code>
- - - Input movie name and target language
- - - Click <Search>
- - - Click desired film's name
- - - Select a new film to watch on Netflix
+   - <code>localhost:8000</code>
+   - Input movie name and target language
+   - Click \<Search\>
+   - Click desired film's name
+   - Select a new film to watch on Netflix
 
 ### Project One-line Description:
 A recommendation app that takes a film [X] and language [Y] as an input and returns a film similar to the input film, but produced in the input language.
@@ -72,6 +71,7 @@ Data Collection
 - <code>tmdb_search.py</code> - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expressed as a dictionary as well. 
 - <code>load_movielens_mongodb.py</code> - A script which loads all Movielens movies with information into a Mongodb collection
 - <code>load_netflix_tmdb_mongodb.py</code> - A script which takes all Netflix movies from the WhatsOnNetflix scraped data, adds information using the tmdb API call and loads the movies into another Mongodb collection
+- <code>exploring_</code> contain code which was for experimenting with movielens and the use of the graph database Neo4j
 Data Analysis
 - <code>WONanalysis.ipynb</code> - A Jupyter Notebook which shows some simple analysis of the Netflix data. Years, languages, and top performers. 
 Recommendation Engine
@@ -79,7 +79,7 @@ Recommendation Engine
 Web App
 - <code>cinepy</code> - this directory contains the web app which allows users to select a movie and a target language and get movie recommendations in the target language similar to the selected movie. The <code>movierecommendation/db.py</code> file establishes a connection to the mongodb database and defines functions to query the movielens and netflix movies. The <code>movierecommendation/views.py</code> contains the logic generating the web views, the HTML templates are in <code>movierecommendation/templates/</code>
 
-###Code Walkthrough
+### Code Walkthrough
 - Process: (MongoDB, Selenium, Requests)
 whats_on_netflix - scrape the website and save every netflix movie available. 
 then set up TMDB API and search script.
