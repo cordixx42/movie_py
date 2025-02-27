@@ -71,7 +71,7 @@ Data Collection
 - <code>tmdb_search.py</code> - takes either a TMDb ID or a film title and searches TMDb via API. If there is a positive result, the data is provided for the film in a dictionary. If not, there is an error expressed as a dictionary as well. 
 - <code>load_movielens_mongodb.py</code> - A script which loads all Movielens movies with information into a Mongodb collection
 - <code>load_netflix_tmdb_mongodb.py</code> - A script which takes all Netflix movies from the WhatsOnNetflix scraped data, adds information using the tmdb API call and loads the movies into another Mongodb collection
-- <code>exploring_</code> contain code which was for experimenting with movielens and the use of the graph database Neo4j
+- <code>exploring_</code> directories contain code which was for experimenting with movielens and the use of the graph database Neo4j
 Data Analysis
 - <code>WONanalysis.ipynb</code> - A Jupyter Notebook which shows some simple analysis of the Netflix data. Years, languages, and top performers. 
 Recommendation Engine
